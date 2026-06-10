@@ -10,7 +10,13 @@ public class MITEmp {
         this.id = id;
         this.salary = salary;
     }
-
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+    public double getSalary() {
+        return salary;
+    }
+    
     public double displaySalary() {
         return salary;
     }

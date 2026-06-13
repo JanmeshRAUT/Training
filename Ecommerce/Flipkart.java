@@ -1,24 +1,33 @@
 package Ecommerce;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Flipkart {
-    Product product;
     List<Product> productList=new ArrayList<>();
 
     public void addProduct(Product product){
         productList.add(product);
     }
-    public void removeProduct(int id){
+
+
+    public int removeProduct(int id){
         for (Product product : productList) {
             if (product.getId().equals(String.valueOf(id))) {
                 productList.remove(product);
-                break;
+                return id;
             }
         }
+        return -1;
     }
     public List<Product> getProductList() {
+        return productList;
+    }
+
+    public List<Product> sortProductsbyName(){
+        Collections.sort(productList, Comparator.comparing(Product::getName));
         return productList;
     }
     public void updateProduct(int id, Product newProduct){
@@ -30,12 +39,13 @@ public class Flipkart {
             }
         }
     }
-    public void searchProduct(String name){
+    public Product searchProduct(String name){
         for(Product product:productList){
             if(product.getName().equalsIgnoreCase(name)){
-                System.out.println(product);
+                return product;
             }
         }
+        return null;
     }
 
     public void displayProducts(){

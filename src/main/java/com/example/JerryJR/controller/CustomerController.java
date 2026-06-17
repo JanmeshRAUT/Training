@@ -1,11 +1,17 @@
 package com.example.JerryJR.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.JerryJR.entity.Customer;
 import com.example.JerryJR.services.CustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/customer")
@@ -38,19 +44,21 @@ public class CustomerController {
     }
 
 
-    @GetMapping("id/{id}")
+    @GetMapping("email/{email}")
     Customer getCustomerByEmail(@PathVariable String email) {
-        if(id == null || email.equals("")) {
+        if(email == null || email.equals("")) {
             return null;
         }
         return service.getCustomerByEmail(email);
     }
 
+    @GetMapping("city/{city}")
     List<Customer> getCustomerByCity(String city) {
-        return null;
+        return service.getCustomerByCity(city);
     }
 
+    @GetMapping("age/{age}")
     List<Customer> getCustomerByAgeGreaterThan(int age) {
-        return null;
+        return service.getCustomerByAgeGreaterThan(age);
     }
 }

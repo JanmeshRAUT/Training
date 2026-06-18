@@ -25,6 +25,6 @@ public class Customer {
     private String city;
     private int age;
 
-    private String BankUserName;
-    private int password;
+    private String bankUserName;
+    private String password;
 }

@@ -56,17 +56,21 @@ public class CustomerController {
     List<Customer> getCustomerByAgeGreaterThan(@PathVariable int age) {
         return service.getCustomerByAgeGreaterThan(age);
     }
+
     @PutMapping("id/{id}")
-    List<Customer> updateCustomerById(@PathVariable Long id,@RequestBody Customer customer) {
-        Customer existingCustomer = service.getCustomerById(id);
-        if(existingCustomer == null) {
-            return null;
-        }
-        existingCustomer.setName(customer.getName());
-        existingCustomer.setEmail(customer.getEmail());
-        existingCustomer.setCity(customer.getCity());
-        existingCustomer.setAge(customer.getAge());
-        service.SaveCustomer(existingCustomer);
-        return service.getAllCustomers();
+    Customer UpdateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
+        return service.updateCustomer(id, customer);
     }
+
+    @DeleteMapping("id/{id}")
+    Customer DeleteCustomer(@PathVariable Long id) {
+        Customer customer = service.getCustomerById(id);
+        if(customer != null) {
+            service.deleteCustomer(id);
+            return customer;
+        }
+        return null;
+    }
+
+
 }

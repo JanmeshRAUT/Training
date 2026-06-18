@@ -3,12 +3,7 @@ package com.example.JerryJR.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.JerryJR.entity.Customer;
 import com.example.JerryJR.services.CustomerService;
@@ -53,12 +48,25 @@ public class CustomerController {
     }
 
     @GetMapping("city/{city}")
-    List<Customer> getCustomerByCity(String city) {
+    List<Customer> getCustomerByCity(@PathVariable String city) {
         return service.getCustomerByCity(city);
     }
 
     @GetMapping("age/{age}")
-    List<Customer> getCustomerByAgeGreaterThan(int age) {
+    List<Customer> getCustomerByAgeGreaterThan(@PathVariable int age) {
         return service.getCustomerByAgeGreaterThan(age);
+    }
+    @PutMapping("id/{id}")
+    List<Customer> updateCustomerById(@PathVariable Long id,@RequestBody Customer customer) {
+        Customer existingCustomer = service.getCustomerById(id);
+        if(existingCustomer == null) {
+            return null;
+        }
+        existingCustomer.setName(customer.getName());
+        existingCustomer.setEmail(customer.getEmail());
+        existingCustomer.setCity(customer.getCity());
+        existingCustomer.setAge(customer.getAge());
+        service.SaveCustomer(existingCustomer);
+        return service.getAllCustomers();
     }
 }

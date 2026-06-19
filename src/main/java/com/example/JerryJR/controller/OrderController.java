@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/order")
-
-
 public class OrderController {
 
     @Autowired
@@ -32,27 +31,34 @@ public class OrderController {
             @PathVariable Long productId,
             @PathVariable Integer quantity) {
 
-        return orderService.SaveOrder(customerId, productId, quantity);
-    }
-
-    @PutMapping("/{orderId}/{productId}/{quantity}")
-    public Order updateOrder(
-            @PathVariable Long orderId,
-            @PathVariable Long productId,
-            @PathVariable Integer quantity) {
-
-        return orderService.updateOrder(orderId, productId, quantity);
+        return orderService.saveOrder(customerId, productId, quantity);
     }
 
     @DeleteMapping("/id/{id}")
-    public Order deleteOrder(@PathVariable Long id) {
-        Order order = orderService.findOrderById(id);
+    public String deleteOrder(@PathVariable Long id) {
+
         orderService.deleteOrder(id);
-        return order;
+
+        return "Order deleted successfully";
     }
 
     @GetMapping("/product/{productId}/customers")
     public List<Customer> findCustomersByProductId(@PathVariable Long productId) {
         return orderService.findCustomersByProductId(productId);
+    }
+
+    @GetMapping("/customer/{customerId}/count")
+    public Integer countOrdersByCustomerId(@PathVariable Long customerId) {
+        return orderService.countOrdersByCustomerId(customerId);
+    }
+
+    @GetMapping("/customer/{customerId}/total")
+    public Double calculateTotalPriceByCustomerId(@PathVariable Long customerId) {
+        return orderService.calculateTotalPriceByCustomerId(customerId);
+    }
+
+    @GetMapping("/revenue")
+    public Double calculateTotalRevenue() {
+        return orderService.calculateTotalRevenue();
     }
 }

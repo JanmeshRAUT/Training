@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 @RequestMapping("/order")
+
+
 public class OrderController {
 
     @Autowired
@@ -22,28 +23,32 @@ public class OrderController {
 
     @GetMapping("/id/{id}")
     public Order getOrderById(@PathVariable Long id) {
-        if (id == null) {
-            return null;
-        }
         return orderService.findOrderById(id);
     }
 
     @PostMapping("/{customerId}/{productId}/{quantity}")
-    public Order createOrder(@PathVariable Long customerId, @PathVariable Long productId, @PathVariable Integer quantity) {
+    public Order createOrder(
+            @PathVariable Long customerId,
+            @PathVariable Long productId,
+            @PathVariable Integer quantity) {
+
         return orderService.SaveOrder(customerId, productId, quantity);
     }
 
+    @PutMapping("/{orderId}/{productId}/{quantity}")
+    public Order updateOrder(
+            @PathVariable Long orderId,
+            @PathVariable Long productId,
+            @PathVariable Integer quantity) {
 
+        return orderService.updateOrder(orderId, productId, quantity);
+    }
 
     @DeleteMapping("/id/{id}")
     public Order deleteOrder(@PathVariable Long id) {
         Order order = orderService.findOrderById(id);
-        if (order != null) {
-            orderService.deleteOrder(id);
-            System.out.println("Order with id " + id + " has been deleted.");
-            return order;
-        }
-        return null;
+        orderService.deleteOrder(id);
+        return order;
     }
 
     @GetMapping("/product/{productId}/customers")

@@ -89,16 +89,35 @@ public class OrderService {
     }
 
     public Order updateOrder(Long orderId, Long productId, Integer quantity) {
-        Order order = orderRepository.findById(orderId).orElse(null);
-        if (order != null) {
-            if (productRepository.findById(productId).isPresent()) {
-                Product product = productRepository.findById(productId).get();
-                if (product.getStock() >= quantity) {
-                    product.setStock(product.getStock() - quantity);
-                    productRepository.save(product);
-                }
-            }
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        Product oldProduct = order.getProduct();
+
+        // Restore stock from the existing order
+        oldProduct.setStock(oldProduct.getStock() + order.getQuantity());
+        productRepository.save(oldProduct);
+
+        Product newProduct = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        if (newProduct.getStock() < quantity) {
+            throw new RuntimeException(
+                    "Insufficient stock. Available: " + newProduct.getStock()
+            );
         }
+
+        // Deduct stock for updated order
+        newProduct.setStock(newProduct.getStock() - quantity);
+        productRepository.save(newProduct);
+
+        // Update order details
+        order.setProduct(newProduct);
+        order.setQuantity(quantity);
+        order.setPrice(newProduct.getProductPrice() * quantity);
+
+        return orderRepository.save(order);
     }
 
 

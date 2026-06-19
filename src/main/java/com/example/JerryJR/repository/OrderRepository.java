@@ -24,14 +24,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
         """)
     Double calculateTotalPrice(@Param("customerId") Long customerId);
 
+
     @Query("""
-        SELECT COUNT(o)
-        FROM Order o
-        WHERE o.customer.id = :customerId
-        AND o.product.productId = :productId
-        """)
-    Long countOrdersByCustomerAndProduct(@Param("customerId") Long customerId, @Param("productId") Long productId
-    );
+                select sum(o.price)
+                from Order o""")
+    Double calculateTotalRevenue();
 
 
     List<Order> findByCustomerId(Long customerId);

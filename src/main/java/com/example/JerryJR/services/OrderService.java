@@ -77,6 +77,31 @@ public class OrderService {
        return customers;
     }
 
+    public Integer countOrdersByCustomerId(Long customerId) {
+        return orderRepository.countOrdersByCustomerId(customerId).intValue();
+    }
+
+    public Double calculateTotalPriceByCustomerId(Long customerId) {
+        return orderRepository.calculateTotalPrice(customerId);
+    }
+    public Double calculateTotalRevenue(){
+        return orderRepository.calculateTotalRevenue();
+    }
+
+    public Order updateOrder(Long orderId, Long productId, Integer quantity) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order != null) {
+            if (productRepository.findById(productId).isPresent()) {
+                Product product = productRepository.findById(productId).get();
+                if (product.getStock() >= quantity) {
+                    product.setStock(product.getStock() - quantity);
+                    productRepository.save(product);
+                }
+            }
+        }
+    }
+
+
 
 
 }

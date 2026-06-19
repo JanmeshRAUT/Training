@@ -31,13 +31,13 @@ public class ProductController {
     public List<Product> saveAll(@RequestBody List<Product> products){
         return productServices.saveAll(products);
     }
-    @PutMapping
+    @PutMapping("/id/{id}")
     public Product updateProduct(@PathVariable Long id,@RequestBody Product product){
         return productServices.updateProduct(id,product);
     }
-    @DeleteMapping
-    public void deleteProduct(@PathVariable Long id){
-        productServices.deleteProduct(id);
+    @DeleteMapping("/id/{id}")
+    public Product deleteProduct(@PathVariable Long id){
+        return productServices.deleteProduct(id);
     }
 
 }

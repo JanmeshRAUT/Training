@@ -40,6 +40,7 @@ public class OrderController {
         Order order = orderService.findOrderById(id);
         if (order != null) {
             orderService.deleteOrder(id);
+            System.out.println("Order with id " + id + " has been deleted.");
             return order;
         }
         return null;

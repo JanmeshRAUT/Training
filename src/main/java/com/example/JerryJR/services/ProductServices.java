@@ -34,6 +34,7 @@ public class ProductServices {
             oldProduct.setProductPrice(product.getProductPrice());
             oldProduct.setStock(product.getStock());
             oldProduct.setCategory(product.getCategory());
+
             return productRepository.save(oldProduct);
         } else {
             return null;
@@ -46,12 +47,13 @@ public class ProductServices {
     }
 
 
-    public void deleteProduct(Long id) {
-        Product oldProduct = productRepository.findById(id).orElse(null);
-        if(oldProduct != null) {
-            productRepository.delete(oldProduct);
-            System.out.println("Product with id " + id + " has been deleted.");
+    public Product deleteProduct(Long id) {
+        Product product = productRepository.findById(id).orElse(null);
+        if (product != null) {
+            productRepository.deleteById(id);
+            return product;
         }
+        return null;
     }
 
     public List<Product> findByCategory(String category) {

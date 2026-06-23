@@ -1,12 +1,11 @@
 package com.example.JerryJR.controller;
 
-import java.util.List;
-
+import com.example.JerryJR.entity.Customer;
+import com.example.JerryJR.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.JerryJR.entity.Customer;
-import com.example.JerryJR.services.CustomerService;
+import java.util.List;
 
 @RestController
 @RequestMapping("/customer")
@@ -16,13 +15,8 @@ public class CustomerController {
     private CustomerService service;
 
     @GetMapping
-    List<Customer> getAllCustomers() {
+    public List<Customer> getAllCustomers() {
         return service.getAllCustomers();
-    }
-
-    @PostMapping
-    Customer SaveCustomer(@RequestBody Customer customer) {
-        return service.SaveCustomer(customer);
     }
 
     @PostMapping("/saveAll")
@@ -30,47 +24,39 @@ public class CustomerController {
         return service.saveAllCustomers(customers);
     }
 
-    @GetMapping("id/{id}")
-    Customer getCustomerById(@PathVariable Long id) {
-        if(id == null) {
-            return null;
-        }
+    @GetMapping("/id/{id}")
+    public Customer getCustomerById(@PathVariable Long id) {
         return service.getCustomerById(id);
     }
 
-
-    @GetMapping("email/{email}")
-    Customer getCustomerByEmail(@PathVariable String email) {
-        if(email == null || email.equals("")) {
-            return null;
-        }
+    @GetMapping("/email/{email}")
+    public Customer getCustomerByEmail(@PathVariable String email) {
         return service.getCustomerByEmail(email);
     }
 
-    @GetMapping("city/{city}")
-    List<Customer> getCustomerByCity(@PathVariable String city) {
+    @GetMapping("/city/{city}")
+    public List<Customer> getCustomerByCity(@PathVariable String city) {
         return service.getCustomerByCity(city);
     }
 
-    @GetMapping("age/{age}")
-    List<Customer> getCustomerByAgeGreaterThan(@PathVariable int age) {
+    @GetMapping("/age/{age}")
+    public List<Customer> getCustomerByAgeGreaterThan(@PathVariable int age) {
         return service.getCustomerByAgeGreaterThan(age);
     }
 
-    @PutMapping("id/{id}")
-    Customer UpdateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
+    @PutMapping("/id/{id}")
+    public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
         return service.updateCustomer(id, customer);
     }
 
-    @DeleteMapping("id/{id}")
-    Customer DeleteCustomer(@PathVariable Long id) {
+    @DeleteMapping("/id/{id}")
+    public Customer deleteCustomer(@PathVariable Long id) {
         Customer customer = service.getCustomerById(id);
-        if(customer != null) {
+
+        if (customer != null) {
             service.deleteCustomer(id);
-            return customer;
         }
-        return null;
+
+        return customer;
     }
-
-
 }

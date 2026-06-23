@@ -30,7 +30,6 @@ public class Customer {
 
     private String bankUserName;
 
-    @JsonIgnore
     private String password;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)

@@ -38,7 +38,6 @@ public class OrderController {
     public String deleteOrder(@PathVariable Long id) {
 
         orderService.deleteOrder(id);
-
         return "Order deleted successfully";
     }
 

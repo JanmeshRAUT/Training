@@ -65,5 +65,20 @@ public class CustomerService {
     public void deleteCustomer(Long id) {
         customerRepository.deleteById(id);
     }
+
+    public Customer registerCustomer(Customer customer) {
+        if (customerRepository.findByEmail(customer.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already exists");
+        }
+        return customerRepository.save(customer);
+    }
+
+    public String loginCustomer(String email, String password) {
+        Customer customer = customerRepository.findByEmail(email).orElse(null);
+        if (customer != null && customer.getPassword().equals(password)) {
+            return "Login successful";
+        }
+        throw new RuntimeException("Invalid email or password");
+    }
 }
 
